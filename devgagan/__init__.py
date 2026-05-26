@@ -1,23 +1,19 @@
 # ---------------------------------------------------
 # File Name: __init__.py
-# Description: A Pyrogram bot for downloading files from Telegram channels or groups 
-#              and uploading them back to Telegram.
-# Author: Gagan
-# GitHub: https://github.com/devgaganin/
-# Telegram: https://t.me/PdfsHubbb
-# YouTube: https://youtube.com/@dev_gagan
-# Created: 2025-01-11
-# Last Modified: 2025-01-11
-# Version: 2.0.5
-# License: MIT License
+# Author: Gagan | Fixed by Claude
+# Version: 2.1.1
+# Fixes:
+#   - pyromod import (app.ask fix)
+#   - Peer ID cache on startup (channel/log_group fix)
 # ---------------------------------------------------
 
 import asyncio
 import logging
 import time
-from pyrogram import Client
-from pyrogram.enums import ParseMode 
-from config import API_ID, API_HASH, BOT_TOKEN, STRING, MONGO_DB, DEFAULT_SESSION
+import pyromod  # ✅ FIX 1: app.ask() ke liye — pyromod patch karta hai Client ko
+from pyromod import Client  # pyromod wala Client use karo
+from pyrogram.enums import ParseMode
+from config import API_ID, API_HASH, BOT_TOKEN, STRING, MONGO_DB, DEFAULT_SESSION, LOG_GROUP, CHANNEL_ID
 from telethon.sync import TelegramClient
 from motor.motor_asyncio import AsyncIOMotorClient
 
@@ -43,13 +39,14 @@ app = Client(
 sex = TelegramClient('sexrepo', API_ID, API_HASH).start(bot_token=BOT_TOKEN)
 
 if STRING:
-    pro = Client("ggbot", api_id=API_ID, api_hash=API_HASH, session_string=STRING)
+    from pyrogram import Client as PyroClient
+    pro = PyroClient("ggbot", api_id=API_ID, api_hash=API_HASH, session_string=STRING)
 else:
     pro = None
 
-
 if DEFAULT_SESSION:
-    userrbot = Client("userrbot", api_id=API_ID, api_hash=API_HASH, session_string=DEFAULT_SESSION)
+    from pyrogram import Client as PyroClient
+    userrbot = PyroClient("userrbot", api_id=API_ID, api_hash=API_HASH, session_string=DEFAULT_SESSION)
 else:
     userrbot = None
 
@@ -57,17 +54,42 @@ telethon_client = TelegramClient('telethon_session', API_ID, API_HASH).start(bot
 
 # MongoDB setup
 tclient = AsyncIOMotorClient(MONGO_DB)
-tdb = tclient["telegram_bot"]  # Your database
-token = tdb["tokens"]  # Your tokens collection
+tdb = tclient["telegram_bot"]
+token = tdb["tokens"]
 
 async def create_ttl_index():
-    """Ensure the TTL index exists for the `tokens` collection."""
     await token.create_index("expires_at", expireAfterSeconds=0)
 
-# Run the TTL index creation when the bot starts
 async def setup_database():
     await create_ttl_index()
     print("MongoDB TTL index created.")
+
+async def cache_important_peers():
+    """
+    ✅ FIX 2: Restart ke baad Peer ID error fix
+    Pyrogram restart pe channel/group peers bhool jaata hai.
+    Startup pe resolve karke cache me daal do.
+    """
+    peers_to_cache = []
+    
+    try:
+        log_group_id = int(LOG_GROUP)
+        peers_to_cache.append(log_group_id)
+    except (ValueError, TypeError):
+        pass
+    
+    try:
+        peers_to_cache.append(int(CHANNEL_ID))
+    except (ValueError, TypeError):
+        pass
+
+    for peer_id in peers_to_cache:
+        try:
+            await app.get_chat(peer_id)
+            print(f"Peer cached: {peer_id}")
+        except Exception as e:
+            print(f"Could not cache peer {peer_id}: {e}")
+            print("Tip: Bot ko us channel/group me admin banao aur ek baar message bhejo.")
 
 async def restrict_bot():
     global BOT_ID, BOT_NAME, BOT_USERNAME
@@ -77,7 +99,10 @@ async def restrict_bot():
     BOT_ID = getme.id
     BOT_USERNAME = getme.username
     BOT_NAME = f"{getme.first_name} {getme.last_name}" if getme.last_name else getme.first_name
-    
+
+    # ✅ FIX 2: Startup pe peers cache karo
+    await cache_important_peers()
+
     if pro:
         await pro.start()
     if userrbot:
