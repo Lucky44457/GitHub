@@ -1,0 +1,39 @@
+# ✅ SECURITY: Ye files GitHub par upload mat karna
+.env
+*.session
+sexrepo.session
+telethon_session.session
+ggbot.session
+pyrobot.session
+userbot.session
+userrbot.session
+
+# Downloads / temp files
+downloads/
+tmp/
+*.mp4
+*.mkv
+*.jpg
+*.png
+*.pdf
+*.zip
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual env
+venv/
+env/
+.venv/
+
+# Logs
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
