@@ -22,6 +22,7 @@ FREEMIUM_LIMIT = int(getenv("FREEMIUM_LIMIT", "50"))
 PREMIUM_LIMIT = int(getenv("PREMIUM_LIMIT", "150"))
 WEBSITE_URL = getenv("WEBSITE_URL", "shrinkforearn.in")
 AD_API = getenv("AD_API", "f673ecd2aa19a3013eadbd35bb85cdc61d6e6ed3")
+ADMIN_USERNAME = getenv("ADMIN_USERNAME", "DARKEND_X")
 STRING = getenv("STRING", "")
 DEFAULT_SESSION = getenv("DEFAUL_SESSION", None)
 
