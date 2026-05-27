@@ -387,7 +387,7 @@ async def send_expiry_reminders():
                     f"⚠️ **Premium Expiry Reminder**\n\n"
                     f"Your premium expires on **{expire_str}**\n\n"
                     f"Renew now to keep your access!\n"
-                    f"Contact: @DarkEnd7"
+                    f"Contact: @DARKEND_X"
                 )
             except Exception:
                 pass
