@@ -176,7 +176,7 @@ async def process_special_links(userbot, user_id, msg, link):
 # ═══════════════════════════════════════════════
 
 async def process_batch_item(semaphore, userbot, user_id, url, index, total,
-                              pin_msg, keyboard, users_loop):
+                              pin_msg, keyboard, users_loop, message):
     """Single batch item — semaphore ke saath parallel chalega"""
     async with semaphore:
         if not users_loop.get(user_id, False):
@@ -188,7 +188,7 @@ async def process_batch_item(semaphore, userbot, user_id, url, index, total,
 
         try:
             msg = await app.send_message(user_id, f"Processing {index}/{total}...")
-            await process_and_upload_link(userbot, user_id, msg.id, link, 0, None)
+            await process_and_upload_link(userbot, user_id, msg.id, link, 0, message)  # ✅ FIX: message pass karo
         except FloodWait as fw:
             await asyncio.sleep(fw.x + 2)
         except Exception as e:
@@ -296,7 +296,7 @@ async def batch_link(_, message):
             tasks.append(
                 process_batch_item(
                     semaphore, userbot, user_id, url, i, cl,
-                    pin_msg, keyboard, users_loop
+                    pin_msg, keyboard, users_loop, message  # ✅ FIX
                 )
             )
 
@@ -375,7 +375,7 @@ async def resume_batch(_, message):
             tasks.append(
                 process_batch_item(
                     semaphore, userbot, user_id, url, i, total,
-                    pin_msg, keyboard, users_loop
+                    pin_msg, keyboard, users_loop, message  # ✅ FIX
                 )
             )
 
@@ -417,4 +417,4 @@ async def stop_batch(_, message):
         await app.send_message(
             message.chat.id,
             "No active batch processing is running to cancel."
-        )
+    )
