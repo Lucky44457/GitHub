@@ -59,7 +59,7 @@ async def is_allowed(user_id, message):
         "🔒 **Premium or Token Required**\n\n"
         "You need to verify a token to use this bot.\n\n"
         "Use /token to get **12 hours free premium access**.\n"
-        "Or contact @DarkEnd7 to upgrade to premium."
+        "Or contact @DARKEND_X to upgrade to premium."
     )
 
 
