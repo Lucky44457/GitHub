@@ -5,7 +5,7 @@ aiofiles
 pillow
 devgagantools
 tgcrypto
-pyromod
+pyromod==0.1.4
 opencv-python-headless
 requests
 motor
@@ -15,7 +15,7 @@ aiohttp
 telethon
 aiojobs
 werkzeug==2.2.2
-apscheduler 
+apscheduler
 telethon-tgcrypto
 mutagen
 yt-dlp
