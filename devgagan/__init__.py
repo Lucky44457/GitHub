@@ -20,6 +20,7 @@ import time
 # ✅ pyromod import — app.ask() ke liye
 # pyromod 0.2.0+ mein Client directly export nahi hota
 # Client pyrofork (pyrogram) se aata hai, pyromod sirf patch karta hai
+import pyromod
 from pyrogram import Client
 from pyrogram.enums import ParseMode
 from pyrogram.storage import MemoryStorage
