@@ -3,9 +3,9 @@ pyrofork
 psutil
 aiofiles
 pillow
-pyromod==0.2.0
 devgagantools
 tgcrypto
+pyromod==0.2.0
 opencv-python-headless
 requests
 motor
