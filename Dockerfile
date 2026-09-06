@@ -7,7 +7,7 @@
 #   - uvloop added for performance
 # ---------------------------------------------------
 
-FROM python:3.10.4-slim
+FROM python:3.10.13-slim
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
