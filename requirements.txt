@@ -3,6 +3,7 @@ pyrofork
 psutil
 aiofiles
 pillow
+pyromod==0.2.0
 devgagantools
 tgcrypto
 opencv-python-headless
