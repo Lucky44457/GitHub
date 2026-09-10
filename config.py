@@ -26,6 +26,7 @@ ADMIN_USERNAME = getenv("ADMIN_USERNAME", "DARKEND_X")
 UPI_ID = getenv("UPI_ID", "Contact_Admin")
 STRING = getenv("STRING", "")
 DEFAULT_SESSION = getenv("DEFAUL_SESSION", None)
+PYTHONUNBUFFERED=1
 
 # ✅ Cookies env se lo — .env file me rakho, config.py me mat
 YT_COOKIES = getenv("YT_COOKIES", "")
